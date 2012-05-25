@@ -1,10 +1,12 @@
-#!/usr/local/bin/python
+#!/usr/bin/python
+
 import os
 import sys
 import stat
 import md5
 
 filesBySize = {}
+requireEqualNames = False
 
 def walker(arg, dirname, fnames):
     d = os.getcwd()
@@ -14,7 +16,7 @@ def walker(arg, dirname, fnames):
     except ValueError:
         pass
     for f in fnames:
-        if not os.path.isfile(f):
+        if not os.path.isfile(f) or os.path.islink(f):
             continue
         size = os.stat(f)[stat.ST_SIZE]
         if size < 100:
@@ -26,6 +28,7 @@ def walker(arg, dirname, fnames):
             filesBySize[size] = a
         a.append(os.path.join(dirname, f))
     os.chdir(d)
+
 def fmt3(num):
     for x in ['','Kb','Mb','Gb','Tb']:
         if num<1024:
@@ -98,11 +101,16 @@ for aSet in potentialDupes:
 i = 0
 total_size = 0
 for d in dupes:
-    print 'Original is \t%s' % d[0]
+    this_size = os.path.getsize(d[0])
+    print fmt3(this_size),
+    print '\t%s' % d[0],
     for f in d[1:]:
         i = i + 1
-        print 'Duplicate \t%s' % f
-	total_size += os.path.getsize(f)
+        print '\t%s' % f,
+	#inode	= os.stat(f)[stat.ST_INO]
+	#device	= os.stat(f)[stat.ST_DEV]
+
+	total_size += this_size
         #os.remove(f)
     print
 print "Total duplicate size = ",fmt3(total_size)

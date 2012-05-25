@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 
 # Dupinator
 # Original script by Bill Bumgarner: see
@@ -36,12 +36,17 @@ def walker(arg, dirname, fnames):
         a.append(os.path.join(dirname, f))
     os.chdir(d)
 
+def fmt3(num):
+    for x in ['','Kb','Mb','Gb','Tb']:
+        if num<1024:
+	    return "%3.1f%s" % (num, x)
+        num /=1024
 for x in sys.argv[1:]:
-    print 'Scanning directory "%s"....' % x
+    sys.stderr.write('Scanning directory "%s"....' % x + "\n")
     os.path.walk(x, walker, filesBySize)    
 
 FIRST_SCAN_BYTES = 1024
-print 'Finding potential dupes...'
+sys.stderr.write( 'Finding potential dupes...' + "\n")
 dupes = [] # ashearer
 potentialDupes = []
 potentialCount = 0
@@ -51,7 +56,7 @@ for k in sizes:
     inFiles = filesBySize[k]
     hashes = {}
     if len(inFiles) is 1: continue
-    print 'Testing %d files of size %d...' % (len(inFiles), k)
+    sys.stderr.write( 'Testing %d files of size %d...' % (len(inFiles), k) + "\n")
     if requireEqualNames:
         for fileName in inFiles:
             hashes.setdefault(os.path.basename(fileName), []).append(fileName)
@@ -79,15 +84,15 @@ for k in sizes:
     potentialCount = potentialCount + len(outFileGroups)
 del filesBySize
 
-print 'Found %d sets of potential dupes...' % potentialCount
-print 'Scanning for real dupes...'
+sys.stderr.write( 'Found %d sets of potential dupes...' % potentialCount  + "\n")
+sys.stderr.write( 'Scanning for real dupes...'  + "\n")
 
 #dupes = [] ashearer
 for aSet in potentialDupes:
     #outFiles = []
     hashes = {}
     for fileName in aSet:
-        print 'Scanning file "%s"...' % fileName
+        sys.stderr.write( 'Scanning file "%s"...' % fileName   + "\n")
         aFile = file(fileName, 'r')
         hasher = md5.new()
         while True:
