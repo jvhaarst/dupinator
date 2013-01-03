@@ -36,6 +36,12 @@ def walker(arg, dirname, fnames):
         a.append(os.path.join(dirname, f))
     os.chdir(d)
 
+def fmt3(num):
+    for x in ['','Kb','Mb','Gb','Tb']:
+        if num<1024:
+            return "%3.1f%s" % (num, x)
+        num /=1024
+
 for x in sys.argv[1:]:
     sys.stderr.write('Scanning directory "%s"....' % x + "\n")
     os.path.walk(x, walker, filesBySize)    
@@ -109,7 +115,7 @@ bytesSaved = 0
 for d in dupes:
     # Sort on length, as usually less interesting duplicates have longer names
     d.sort( lambda x,y: cmp(len(x), len(y)) )
-    print 'Original is %s %.1fK ' % (d[0],os.path.getsize(d[0])/1024.0)
+    print 'Original is %s %s ' % (d[0], fmt3(os.path.getsize(d[0])))
     for f in d[1:]:
         i = i + 1
         print 'rm %s' % f
@@ -117,4 +123,4 @@ for d in dupes:
         #os.remove(f)
     print
 
-print "Would have saved %.1fK; %d file(s) duplicated." % (bytesSaved/1024.0,len(dupes))
+print "Would have saved %s; %d file(s) duplicated." % (fmt3(bytesSaved),len(dupes))
