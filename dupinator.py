@@ -112,7 +112,7 @@ for d in dupes:
     d.sort( lambda x,y: cmp(len(x), len(y)) )
     for f in d[1:]:
         i = i + 1
-        print 'Would have deleted %s' % f
+        print 'rm %s' % f
         bytesSaved += os.path.getsize(f)
         #os.remove(f)
     print
