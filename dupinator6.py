@@ -36,11 +36,6 @@ def walker(arg, dirname, fnames):
         a.append(os.path.join(dirname, f))
     os.chdir(d)
 
-def fmt3(num):
-    for x in ['','Kb','Mb','Gb','Tb']:
-        if num<1024:
-	    return "%3.1f%s" % (num, x)
-        num /=1024
 for x in sys.argv[1:]:
     sys.stderr.write('Scanning directory "%s"....' % x + "\n")
     os.path.walk(x, walker, filesBySize)    
