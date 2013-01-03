@@ -13,7 +13,7 @@ def walker(arg, dirname, fnames):
     try:
         fnames.remove('Thumbs')
     except ValueError:
-        pass        
+        pass
     for f in fnames:
         if not os.path.isfile(f):
             continue

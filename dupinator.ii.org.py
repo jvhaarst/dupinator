@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 
 # Dupinator
 # Original script by Bill Bumgarner: see
