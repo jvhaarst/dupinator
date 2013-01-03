@@ -11,6 +11,7 @@ import os
 import sys
 import stat
 import md5
+import pipes
 
 filesBySize = {}
 requireEqualNames = False
@@ -118,7 +119,7 @@ for d in dupes:
     print 'Original is %s %s ' % (d[0], fmt3(os.path.getsize(d[0])))
     for f in d[1:]:
         i = i + 1
-        print 'rm %s' % f
+        print 'rm %s' % pipes.quote(f)
         bytesSaved += os.path.getsize(f)
         #os.remove(f)
     print
