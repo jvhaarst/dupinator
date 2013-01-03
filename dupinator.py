@@ -108,6 +108,8 @@ i = 0
 bytesSaved = 0
 for d in dupes:
     print 'Original is %s' % d[0]
+    # Sort on length, as usually less interesting duplicates have longer names
+    d.sort( lambda x,y: cmp(len(x), len(y)) )
     for f in d[1:]:
         i = i + 1
         print 'Would have deleted %s' % f
