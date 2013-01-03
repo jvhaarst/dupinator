@@ -107,9 +107,9 @@ for aSet in potentialDupes:
 i = 0
 bytesSaved = 0
 for d in dupes:
-    print 'Original is %s' % d[0]
     # Sort on length, as usually less interesting duplicates have longer names
     d.sort( lambda x,y: cmp(len(x), len(y)) )
+    print 'Original is %s %.1fK ' % (d[0],os.path.getsize(d[0])/1024.0)
     for f in d[1:]:
         i = i + 1
         print 'rm %s' % f
