@@ -112,11 +112,13 @@ for aSet in potentialDupes:
     dupes.extend(outFileGroups)
 
 i = 0
+counter = 0
 bytesSaved = 0
 for d in dupes:
+    counter = counter + 1
     # Sort on length, as usually less interesting duplicates have longer names
     d.sort( lambda x,y: cmp(len(x), len(y)) )
-    print 'Original is %s %s ' % (d[0], fmt3(os.path.getsize(d[0])))
+    print 'Original is %s %s (#%d)' % (d[0], fmt3(os.path.getsize(d[0])), counter)
     for f in d[1:]:
         i = i + 1
         print 'rm %s' % pipes.quote(f)
